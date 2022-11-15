@@ -281,28 +281,12 @@ Important parts:
 * downloading also happens via a pair of `GET` request, first a request to the Data Proxy with authorization, and url paramter `redirect=false`, then a second one to a tempurl, without authorization. The `redirect=false` parameter is needed because otherwise the Data Proxy tries to be helpful and issue the tempurl with a HTTP 3xx redirect header. For some reason browsers re-send authorization in this case, which then fails. This redirection works in a couple other environments though (like Python).
 
 ### 3.6. Seeing the code in action
+Having the final code on GitHub, the deployment on OKD has to be refreshed.
+1. head back to https://okd-dev.hbp.eu/
+2. pick project on the right
+3. open the "..." menu of the app again (on the far right), and select "Start Build" this time
+4. wait until building and deployment completes
 
+When creating a brand new collab (2.4.1.), the bucket is not initialized yet, so visit the collab from https://wiki.ebrains.eu/bin/view/Collabs/ (if it's favourited, use the checkbox to find it faster), click on "Bucket" on the left, and go with the "Create empty bucket" option.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Now you can click on the app page and it may work. When running an OIDC app the first time ever, it will ask the user to grant permissions, this is normal.
