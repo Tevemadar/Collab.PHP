@@ -53,21 +53,22 @@ These are standard steps for any contemporary app, including the need for HTTPS.
 
 After a bit of time the app becomes available as `http://<application name>-<project name>.apps-dev.hbp.eu`. `http://collab-php-collab-example.apps-dev.hbp.eu/` with these particular settings. It can be checked with some ad-hoc parameters, like `http://collab-php-collab-example.apps-dev.hbp.eu/?a=b&c=d`.
 
-#### 2.2.2. Secure route
-Collab is on HTTPS, so collab apps have to be on HTTPS too.
+#### 2.2.2. Secure the route
+Collab is on `HTTPS`, so collab apps have to be on `HTTPS` too.
 1. Just to be on the same page, literally, go back to the catalog page, either via clicking on the "OKD" logo in the top-left corner, or just navigating to https://okd-dev.hbp.eu/ directly. Then click on the project on the right, under "My Projects", it's `collab-example` for this tutorial
 2. "Applications"/"Routes" on the left, then click on the "Name" (first column) of the route (which matches with the name of the application, `collab-php` for me)
 3. "Actions"/"Edit" on the top-right
 4. Mark "Secure route" under "Security"
 5. "Save" (it's on the very bottom of the page)
 
-Suddenly the app is on HTTPS, one can click on the link from the page directly. Some ad-hoc URL parameters can be added too. As indicated earlier, this version of the page is preserved under a different name, can be tested as https://collab-php-collab-example.apps-dev.hbp.eu/index_start.html?testfield=test&something=else  
-The app is ready for testing in collab environment.
+Suddenly the app is on `HTTPS`, one can click on the link from the page directly. Some ad-hoc URL parameters can be added too. As indicated earlier, this version of the page is preserved under a different name, can be tested as https://collab-php-collab-example.apps-dev.hbp.eu/index_start.html?testfield=test&something=else  
+The app is now ready for testing in collab environment (without OIDC, of course).
 
 ### 2.3. Collab app
 1. Log in to https://wiki.ebrains.eu
 2. Click on "Collabs" on the top, then open any of the tiny down arrows on the left (next to the small green house icon or the "Collabs" text), and click on "Apps". Or just open the page directly: https://wiki.ebrains.eu/bin/view/Apps/  
-3. Click on "+ Create App"![](images/03-Apps.png)
+3. Click on "+ Create App"  
+![](images/03-Apps.png)
 4. Give a "Title" to the app, this is actually its name. `Collab.PHP` in this tutorial
 5. On the right side the "Community App" template should be selected already
 6. Click on "Create" on the bottom-left
@@ -103,7 +104,23 @@ The app should be running, it displays the collection of collab parameters. For 
         "clb-drive-id": "22e48dab-7f9a-4fe4-a5bb-66e26d9e6565"
     }
 From storage point of view `clb-collab-id` is used for accessing the Bucket, and `clb-drive-id` is used for accessing the Drive.  
-Direct link: https://wiki.ebrains.eu/bin/view/Collabs/collab-php/Example%20App (but it will show the final example).
+Direct link: https://wiki.ebrains.eu/bin/view/Collabs/collab-php/Example%20Start (`Example App` would show the final version).
+
+#### 2.4.3. Hide the app
+Having the app installed in a test collab, this is the point where one can hide an "Under development" app if they want to.
+1. Navigate to the "Apps" page as described in 2.3. (or use the direct link https://wiki.ebrains.eu/bin/view/Apps/)  
+![](images/03-Apps.png)
+2a. If the app has a green "Edit" button below it, simply click on that one
+2b. If the app has no "Edit" button:
+    1. Open one of the tiny gray down arrows again
+    2. This time "Apps" will have a sub-tree, listing absolutely every single app
+    3. Open your app
+    4. Click on the "Edit" button on its page (gray, in the top-right button group)
+3. Now the app can be marked "Under development", removing it from the list of selectable application
+4. Press "Save & View" (or just "Save").
+
+In case of this tutorial, a `Collab.PHP Start` app has been created for checking the current phase of the example, and that one is hidden.
+The final app, `Collab.PHP` remains available for "installation". When listing apps under the gray arrows both are expected to be listed.
 
 ## 3. Full app, with OIDC
 ### 3.1. OIDC registration
@@ -122,8 +139,8 @@ And this is what you can click: https://lab.ch.ebrains.eu/hub/user-redirect/lab/
     * `rootUrl` and `baseUrl` are the url of the actual client, `https://collab-php-collab-example.apps-dev.hbp.eu` in this tutorial
     * `redirectUris` can use a wildcard or the actual name of the PHP file. For the tutorial it's the former, `https://collab-php-collab-example.apps-dev.hbp.eu/*` (the `*` could be `token.php`, a file created in a later step)
     * provide `contacts`, semicolon-separated list of email addresses
-    * scopes: move `profile` and `team` to `defaultClientScopes`, apps can't really work without them. Also add `"web-origins"`, so the two lines are  
-    `"defaultClientScopes": ["openid", "email","profile","team","web-origins"],`  
+    * scopes: move `profile` and `team` to `defaultClientScopes`, apps can't really work without them. Also add `"web-origins"` and `"roles"`, so the two lines are  
+    `"defaultClientScopes": ["openid", "email", "profile", "team", "web-origins", "roles"],`  
     `"optionalClientScopes": ["group"]`
     * provide `maintainers`, they're user names. The list can be left empty, a separate `owner` field will be generated anyway (for the user who does the registration)  
     ![](images/04-Register.png)
@@ -132,6 +149,12 @@ And this is what you can click: https://lab.ch.ebrains.eu/hub/user-redirect/lab/
 11. If this file gets lost for any reason, the next runnable cell (under "4. Fetching your OIDC client settings") shows how to get it back. In such case fill in and run the `clientId` cell, run the `bearer_token`, skip the actual registration, and run this cell instead. The only thing what will be missing is the `registrationAccessToken` line, that one is shown at registration only
 12. Most fields will be familiar, they contain the details which were sent in a moment ago. The field we actually need is the `secret`. This piece of text will be used in the code-token exchange  
 ![](images/05-Secret.png)
+
+#### 3.1.1. Proper closing of the JupyterLab environment
+It's a computing resource, running in a virtual machine somewhere at a supercomputing center, and clicking away doesn't actually stop it.
+1. Open the "Kernel" menu from the menubar, and click on "Shut Down All Kernels...". Click on "Shut Down All" to confirm the action
+2. Open the "File" menu from the menubar, and click on "Log Out". It's the last item of the menu, depending on display settings one may even have to scroll down to reach it. Click on "Leave" to confirm the action
+3. Now the window/tab can be closed or used for other purposes.
 
 ### 3.2. Finalizing index.html
 Instead of displaying collab arguments, `index.html` will forward users to the EBrains IAM (Identity and Access Management) service. The arguments will be kept in the `state` url parameter which the application will get back after this pass.  
@@ -287,6 +310,9 @@ Having the final code on GitHub, the deployment on OKD has to be refreshed.
 3. open the "..." menu of the app again (on the far right), and select "Start Build" this time
 4. wait until building and deployment completes
 
-When creating a brand new collab (2.4.1.), the bucket is not initialized yet, so visit the collab from https://wiki.ebrains.eu/bin/view/Collabs/ (if it's favourited, use the checkbox to find it faster), click on "Bucket" on the left, and go with the "Create empty bucket" option.
+When creating a brand new collab (2.4.1.), the bucket is not initialized yet, so visit the collab from https://wiki.ebrains.eu/bin/view/Collabs/ (if it's favourited, use the checkbox to find it faster), click on "Bucket" on the left, and go with the "Create empty bucket" option.  
+![](images/07-Bucket.png)
 
-Now you can click on the app page and it may work. When running an OIDC app the first time ever, it will ask the user to grant permissions, this is normal.
+Now you can click on the app page and it may work. When running an OIDC app the first time ever, it will ask the user to grant permissions, this is normal. Storing stuff in the bucket takes a bit of time, pressing "Load" immediately after "Save" may not work at all, or load old content.
+
+The example collab is live and openly accessible at https://wiki.ebrains.eu/bin/view/Collabs/collab-php/Example%20App - most probably you have no write access there, so only loading will work, the message stored in `hello.txt` is `Hello World!`. The file itself is accessible (downloadable) via the "Bucket" interface too.
