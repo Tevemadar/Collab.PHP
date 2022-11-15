@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Collab check</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <pre id="pre"></pre>
+        <script>
+            let state = {};
+            for (let setting of location.search.substring(1).split("&")) {
+                let [key, value] = setting.split("=");
+                state[key] = value;
+            }
+            document.getElementById("pre").innerText = JSON.stringify(state, null, 4);
+        </script>
+    </body>
+</html>

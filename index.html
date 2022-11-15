@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Collab check</title>
+        <title>Redirect page</title>
         <meta charset="UTF-8">
-    </head>
-    <body>
-        <pre id="pre"></pre>
         <script>
             let state = {};
             for (let setting of location.search.substring(1).split("&")) {
                 let [key, value] = setting.split("=");
                 state[key] = value;
             }
-            document.getElementById("pre").innerText = JSON.stringify(state, null, 4);
+            let client_id = "Collab-PHP";
+            let redirect_uri = "https://collab-php-collab-example.apps-dev.hbp.eu/token.php";
+            location.href = `https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/auth?response_type=code&login=true&client_id=${client_id}&redirect_uri=${redirect_uri}&state=${encodeURIComponent(JSON.stringify(state))}`;
         </script>
+    </head>
+    <body>
+        Redirecting to IAM...
     </body>
 </html>
